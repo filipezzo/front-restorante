@@ -1,3 +1,44 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+  --black: #231f20;
+  --white: #d4d4d8;
+}
+
+body {
+  background-image: repeating-linear-gradient(
+      to right,
+      var(--black),
+      var(--black) 1px,
+      transparent 1px,
+      transparent 30px
+    ),
+    repeating-linear-gradient(
+      to bottom,
+      var(--black),
+      var(--black) 1px,
+      transparent 1px,
+      transparent 30px
+    );
+
+  font-family: "Poppins", sans-serif;
+}
+
+.dark body {
+  background-image: repeating-linear-gradient(
+      to right,
+      var(--black),
+      var(--black) 1px,
+      transparent 1px,
+      transparent 30px
+    ),
+    repeating-linear-gradient(
+      to bottom,
+      var(--black),
+      var(--black) 1px,
+      transparent 1px,
+      transparent 30px
+    );
+}
