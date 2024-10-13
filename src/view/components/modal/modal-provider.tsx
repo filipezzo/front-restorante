@@ -13,6 +13,7 @@ interface ModalProviderProps {
   children: ReactNode;
   isOpen: boolean;
   onClose: () => void;
+  resetData: () => void;
 }
 
 interface ModalCtxProps {
@@ -21,7 +22,12 @@ interface ModalCtxProps {
 
 const ModalCtx = createContext<ModalCtxProps | null>(null);
 
-export function Modal({ children, isOpen, onClose }: ModalProviderProps) {
+export function Modal({
+  children,
+  isOpen,
+  onClose,
+  resetData,
+}: ModalProviderProps) {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState(isOpen);
 
@@ -31,6 +37,7 @@ export function Modal({ children, isOpen, onClose }: ModalProviderProps) {
     } else {
       const timer = setTimeout(() => {
         setIsVisible(false);
+        resetData();
       }, 300);
       return () => clearTimeout(timer);
     }

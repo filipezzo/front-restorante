@@ -16,7 +16,7 @@ export function Button({
   return (
     <button
       className={cn(
-        "flex h-10 items-center gap-2 rounded-lg bg-app-green px-4 py-2 text-sm transition-colors hover:bg-emerald-700",
+        "flex h-10 items-center gap-2 rounded-lg bg-app-green px-4 py-2 text-sm transition-colors hover:bg-emerald-700 disabled:opacity-60",
         variant === "outline" && "bg-zinc-800 hover:bg-zinc-600",
         className,
       )}
