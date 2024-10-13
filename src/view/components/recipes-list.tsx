@@ -30,8 +30,9 @@ const MockArr: MockItem[] = [
 
 export function RecipesList() {
   const [mockData, setMockData] = useState(MockArr);
-  console.log(setMockData);
+
   const hasRecipes = MockArr.length > 0;
+
   return (
     <ul
       className={cn(

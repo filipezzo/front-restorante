@@ -1,7 +1,11 @@
 import { ScanSearch, Sparkle } from "lucide-react";
 import { Button } from "./button";
 
-export function RecipesHeader() {
+interface RecipesHeaderProps {
+  onOpen: () => void;
+}
+
+export function RecipesHeader({ onOpen }: RecipesHeaderProps) {
   return (
     <header className="flex items-center justify-between">
       <h2 className="text-xl font-medium">Suas receitas!</h2>
@@ -10,7 +14,7 @@ export function RecipesHeader() {
           <ScanSearch size={20} />
           Descobrir
         </Button>
-        <Button variant="primary">
+        <Button onClick={onOpen} variant="primary">
           <Sparkle size={20} />
           Criar Receita
         </Button>
