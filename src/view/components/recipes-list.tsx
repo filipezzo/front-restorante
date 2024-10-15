@@ -5,9 +5,10 @@ import { RecipeItem } from "./recipe-item";
 
 interface RecipesListProps {
   recipes: RecipeOption[];
+  onOpen: () => void;
 }
 
-export function RecipesList({ recipes }: RecipesListProps) {
+export function RecipesList({ recipes, onOpen }: RecipesListProps) {
   const hasRecipes = recipes?.length > 0;
   return (
     <ul
@@ -19,7 +20,7 @@ export function RecipesList({ recipes }: RecipesListProps) {
       {hasRecipes ? (
         recipes.map((recipe) => <RecipeItem key={recipe.id} recipe={recipe} />)
       ) : (
-        <NoRecipeItem />
+        <NoRecipeItem onOpen={onOpen} />
       )}
     </ul>
   );

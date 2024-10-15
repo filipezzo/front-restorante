@@ -20,7 +20,7 @@ export function Recipes() {
   return (
     <Layout>
       <RecipesHeader onOpen={onOpen} />
-      <RecipesList recipes={recipes} />
+      <RecipesList onOpen={onOpen} recipes={recipes} />
       <RecipeModal
         isOpen={isOpen}
         onClose={onClose}

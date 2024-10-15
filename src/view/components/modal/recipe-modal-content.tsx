@@ -27,6 +27,7 @@ export function RecipeModalContent({
       <ul className="flex flex-col gap-5">
         {data.map((item) => (
           <li
+            key={item.id}
             onClick={() => onSelectRecipe(item)}
             className="group line-clamp-2 flex cursor-pointer flex-col gap-2 rounded-xl bg-gray-800 p-5 transition-opacity hover:opacity-80"
           >
