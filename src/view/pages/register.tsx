@@ -3,8 +3,9 @@ import { AxiosError } from "axios";
 import { ChefHat } from "lucide-react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { z } from "zod";
+import { useAuth } from "../../app/hooks/useAuth";
 import { useRegister } from "../../app/hooks/useRegister";
 import { cn } from "../../app/utils/cn";
 import { Button } from "../components/button";
@@ -28,29 +29,23 @@ export function Register() {
     register,
     handleSubmit,
     formState: { errors },
-    reset,
   } = useForm<RegisterFormSchema>({
     resolver: zodResolver(registerFormSchema),
   });
 
-  const navigate = useNavigate();
-
   const { mutateAsync, isPending } = useRegister();
+
+  const { signin } = useAuth();
 
   const handleRegisterSubmit = async (data: RegisterFormSchema) => {
     try {
-      const { id } = await mutateAsync(data);
-      reset();
-      console.log(id);
-      navigate("/login", {
-        state: {
-          success: true,
-        },
-        replace: true,
-      });
+      const { token } = await mutateAsync(data);
+      signin(token);
     } catch (e) {
       if (e instanceof AxiosError) {
         toast.error(e.response?.data.message);
+      } else {
+        toast.error("erro ao realizar registro");
       }
     }
   };
