@@ -1,57 +1,29 @@
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useState } from "react";
 import { useGetRecipesOptions } from "../../../app/hooks/use-get-recipes-options";
-import { RecipeOption } from "../../../app/types/recipe-option";
 import { Modal } from "./modal-provider";
 import { RecipeModalContent } from "./recipe-modal-content";
 
 interface RecipeModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onAddRecipe: (recipe: RecipeOption) => void;
 }
 
-export function RecipeModal({
-  isOpen,
-  onClose,
-  onAddRecipe,
-}: RecipeModalProps) {
-  const [recipesOptions, setRecipesOptions] = useState<RecipeOption[] | []>([]);
-  const [selectedRecipe, setSelectedRecipe] = useState<RecipeOption | null>(
-    null,
-  );
+export function RecipeModal({ isOpen, onClose }: RecipeModalProps) {
   const [text, setText] = useState("");
-  const { mutate, data, isPending } = useGetRecipesOptions();
+  const { mutate, data: recipes, isPending } = useGetRecipesOptions();
 
-  const handleSelectRecipe = (recipe: RecipeOption) => {
-    setSelectedRecipe(recipe);
-  };
-
-  const resetRecipes = () => setRecipesOptions([]);
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     if (!text) {
       return;
     }
-
     mutate(text);
   };
 
-  useEffect(() => {
-    if (selectedRecipe) {
-      onAddRecipe(selectedRecipe);
-    }
-  }, [selectedRecipe]);
-
-  useEffect(() => {
-    if (data) {
-      setRecipesOptions(data);
-    }
-  }, [data]);
-
   return (
-    <Modal isOpen={isOpen} onClose={onClose} resetData={resetRecipes}>
+    <Modal isOpen={isOpen} onClose={onClose}>
       <Modal.Header>
-        {recipesOptions.length > 0
+        {recipes && recipes?.length > 0
           ? "Selecione uma receita"
           : "Gerar Receita com IA"}
       </Modal.Header>
@@ -61,8 +33,8 @@ export function RecipeModal({
           onSubmit={handleSubmit}
           isPending={isPending}
           onChangeText={setText}
-          data={recipesOptions}
-          onSelectRecipe={handleSelectRecipe}
+          data={recipes}
+          onClose={onClose}
         />
       </Modal.Content>
     </Modal>

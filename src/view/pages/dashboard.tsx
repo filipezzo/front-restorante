@@ -1,5 +1,7 @@
+import { useAuth } from "../../app/hooks/useAuth";
 import { Layout } from "../components/layout";
 
 export function Dashboard() {
-  return <Layout>Bem vindo</Layout>;
+  const { user } = useAuth();
+  return <Layout>Bem vindo, {user?.name}</Layout>;
 }

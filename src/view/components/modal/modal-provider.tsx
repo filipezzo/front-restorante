@@ -13,7 +13,7 @@ interface ModalProviderProps {
   children: ReactNode;
   isOpen: boolean;
   onClose: () => void;
-  resetData: () => void;
+  resetData?: () => void;
 }
 
 interface ModalCtxProps {
@@ -34,14 +34,16 @@ export function Modal({
   useEffect(() => {
     if (isOpen) {
       setIsVisible(true);
-    } else {
+    } else if (!isOpen && resetData) {
       const timer = setTimeout(() => {
         setIsVisible(false);
         resetData();
       }, 300);
       return () => clearTimeout(timer);
+    } else {
+      setIsVisible(false);
     }
-  }, [isOpen]);
+  }, [isOpen, resetData]);
 
   useEffect(() => {
     if (isOpen) {

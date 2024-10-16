@@ -1,4 +1,5 @@
 import axios from "axios";
+import { sleep } from "../helpers/sleep";
 
 export const api = axios.create({
   baseURL: import.meta.env.VITE_API_KEY,
@@ -10,4 +11,10 @@ api.interceptors.request.use((config) => {
     config.headers.Authorization = `Bearer ${token}`;
   }
   return config;
+});
+
+api.interceptors.response.use(async (data) => {
+  await sleep(500);
+
+  return data;
 });

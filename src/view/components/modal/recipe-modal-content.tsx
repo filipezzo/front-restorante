@@ -1,6 +1,8 @@
 import { Sparkle, TriangleAlert } from "lucide-react";
 import { FormEvent } from "react";
-import { RecipeOption } from "../../../app/types/recipe-option";
+import toast from "react-hot-toast";
+import { Recipe } from "../../../app/hooks/use-get-recipes-options";
+import { useCreateRecipe } from "../../../app/hooks/useCreateRecipe";
 import { Button } from "../button";
 
 interface RecipeModalContentProps {
@@ -8,8 +10,8 @@ interface RecipeModalContentProps {
   onChangeText: (text: string) => void;
   text: string;
   isPending: boolean;
-  data: RecipeOption[] | [];
-  onSelectRecipe: (recipe: RecipeOption) => void;
+  data: Recipe[] | undefined;
+  onClose: () => void;
 }
 
 export function RecipeModalContent({
@@ -18,26 +20,21 @@ export function RecipeModalContent({
   text,
   isPending,
   data,
-  onSelectRecipe,
+  onClose,
 }: RecipeModalContentProps) {
-  const hasData = data?.length > 0;
-  console.log(data);
-  if (hasData) {
-    return (
-      <ul className="flex flex-col gap-5">
-        {data.map((item) => (
-          <li
-            key={item.id}
-            onClick={() => onSelectRecipe(item)}
-            className="group line-clamp-2 flex cursor-pointer flex-col gap-2 rounded-xl bg-gray-800 p-5 transition-opacity hover:opacity-80"
-          >
-            <strong className="group-hover:text-app-green">{item.nome}</strong>
-            <p className="text-sm">{item.descricao}</p>
-          </li>
-        ))}
-      </ul>
-    );
-  }
+  const hasData = data && data?.length > 0;
+
+  const { mutateAsync } = useCreateRecipe();
+
+  const handleCreateRecipe = async (recipe: Recipe) => {
+    try {
+      await mutateAsync(recipe);
+      onClose();
+    } catch (error) {
+      console.log(error);
+      toast.error("Algo deu errado ao criar receita");
+    }
+  };
 
   if (!hasData) {
     return (
@@ -69,6 +66,22 @@ export function RecipeModalContent({
           </Button>
         </form>
       </>
+    );
+  }
+  if (hasData) {
+    return (
+      <ul className="flex flex-col gap-5">
+        {data.map((item, index) => (
+          <li
+            key={index}
+            onClick={() => handleCreateRecipe(item)}
+            className="group line-clamp-2 flex cursor-pointer flex-col gap-2 rounded-xl bg-gray-800 p-5 transition-opacity hover:opacity-80"
+          >
+            <strong className="group-hover:text-app-green">{item.title}</strong>
+            <p className="text-sm">{item.description}</p>
+          </li>
+        ))}
+      </ul>
     );
   }
 }

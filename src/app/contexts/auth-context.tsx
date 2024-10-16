@@ -7,6 +7,7 @@ import {
 } from "react";
 import toast from "react-hot-toast";
 import { User, useUser } from "../hooks/useUser";
+import { LaunchScreen } from "../../view/pages/launch-screen";
 
 interface AuthContextProviderProps {
   signedIn: boolean;
@@ -51,6 +52,7 @@ export function AuthContextProvider({ children }: { children: ReactNode }) {
         user: data,
       }}
     >
+      <LaunchScreen isLoading={isFetching} />
       {!isFetching && children}
     </AuthContext.Provider>
   );
