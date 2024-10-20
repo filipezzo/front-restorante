@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { Aside } from "./aside";
+import { Aside } from "../components/aside";
 
 interface LayoutProps {
   children: ReactNode;

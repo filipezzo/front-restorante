@@ -6,8 +6,8 @@ import {
   useState,
 } from "react";
 import toast from "react-hot-toast";
+import { LaunchScreen } from "../../view/layouts/launch-screen";
 import { User, useUser } from "../hooks/useUser";
-import { LaunchScreen } from "../../view/pages/launch-screen";
 
 interface AuthContextProviderProps {
   signedIn: boolean;

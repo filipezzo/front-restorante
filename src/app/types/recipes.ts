@@ -3,3 +3,7 @@ export type ShowRecipe = {
   id: string;
   title: string;
 };
+
+export type RecipeItem = ShowRecipe & {
+  userId: string;
+};

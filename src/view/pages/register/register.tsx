@@ -1,54 +1,15 @@
-import { zodResolver } from "@hookform/resolvers/zod";
-import { AxiosError } from "axios";
 import { ChefHat } from "lucide-react";
-import { useForm } from "react-hook-form";
-import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
-import { z } from "zod";
-import { useAuth } from "../../app/hooks/useAuth";
-import { useRegister } from "../../app/hooks/useRegister";
-import { cn } from "../../app/utils/cn";
-import { Button } from "../components/button";
-import { Loading } from "../components/loading";
-import { TextInput } from "../components/text-input";
-
-const registerFormSchema = z.object({
-  name: z
-    .string()
-    .trim()
-    .min(1, "O nome não pode estar vazio.")
-    .min(3, "Seu nome deve conter no mínimo 3 caracteres."),
-  email: z.string().email("Email inválido"),
-  password: z.string().min(6, "A senha deve ter pelo menos 6 caracteres"),
-});
-
-type RegisterFormSchema = z.infer<typeof registerFormSchema>;
+import { cn } from "../../../app/utils/cn";
+import { Button } from "../../components/button";
+import { Loading } from "../../components/loading";
+import { TextInput } from "../../components/text-input";
+import { useRegisterController } from "./use-register-controller";
 
 export function Register() {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<RegisterFormSchema>({
-    resolver: zodResolver(registerFormSchema),
-  });
+  const { errors, handleRegisterSubmit, handleSubmit, isPending, register } =
+    useRegisterController();
 
-  const { mutateAsync, isPending } = useRegister();
-
-  const { signin } = useAuth();
-
-  const handleRegisterSubmit = async (data: RegisterFormSchema) => {
-    try {
-      const { token } = await mutateAsync(data);
-      signin(token);
-    } catch (e) {
-      if (e instanceof AxiosError) {
-        toast.error(e.response?.data.message);
-      } else {
-        toast.error("erro ao realizar registro");
-      }
-    }
-  };
   return (
     <div className="grid h-screen w-full place-items-center bg-[url('https://images.unsplash.com/photo-1516684542079-927175cedbb0?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')] bg-center bg-no-repeat p-5">
       <form
